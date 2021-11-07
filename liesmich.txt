@@ -1,0 +1,51 @@
+Datenbank Charset/Kollation Konvertierung auf utf8mb4 nach Update auf Zen Cart 1.5.6f deutsch
+
+Dieses PHP-Skript kann verwendet werden, um Ihre MySQL-Datenbanktabellen nach utf8mb4 zu konvertieren, wobei die Integrität aller internen Multibyte-Zeichen erhalten bleibt. 
+Das ist dann sinnvoll, wenn Sie ein Update einer älteren Zen Cart Version auf 1.5.6f deutsch durchgeführt haben und Ihre Datenbanktabellen noch utf8_general_ci verwenden.
+Sie führen dieses Skript also erst dann aus, wenn Sie einen problemlos funktionierenden auf 1.5.6f aktualisierten Zen Cart Shop betreiben!
+
+## ANFORDERUNGEN
+Für beste Ergebnisse sollten Sie MySQL 5.7 oder neuer und Zen Cart v1.5.6f deutsch verwenden, BEVOR Sie fortfahren.
+
+## WICHTIG
+Es ist **sehr wichtig**, Zen Cart v1.5.6f deutsch zu verwenden, bevor Sie mit dieser Konvertierung fortfahren, denn die Upgrade-Schritte in 1.5.6f deutsch erhöhen die Größe der Datenbanktabellen, um den den größeren Speicherbedarf von Multibyte-Zeichen zu berücksichtigen. 
+Wenn Sie diese Konvertierung für kürzere Felder durchführen, können kann es zu Datenverlusten kommen oder das Skript kann sogar fehlschlagen, wenn in der Datenbank der Strict-Modus aktiviert ist und die Felder nicht lang genug für die größeren Zeichen sind.
+
+#### Allgemeines Skript
+Dieses Skript wurde zwar in erster Linie zur Unterstützung von Zen Cart-Benutzern entwickelt, ist aber nicht speziell auf Zen Cart zugeschnitten. 
+Theoretisch könnte man damit alle Tabellen einer beliebigen Datenbank nach utf8mb4 migrieren.
+
+
+## VORSICHT: MACHEN SIE IMMER ZUERST EIN DATENBANK-BACKUP!!!!
+
+
+================= WICHTIG =====================
+Vor der Verwendung dieses Scripts:
+BACKUP von Shop und Datenbank machen! 
+Keine Haftung, Verwendung auf eigene Gefahr!
+BACKUP gemacht? Ok, dann weiterlesen...
+=================================================
+
+
+## Gehen Sie in folgenden Schritten vor:
+
+1) SICHERN SIE IHRE DATENBANK!!!
+
+2) Bearbeiten Sie die PHP-Datei utf8mb-conversion.php mit einem Texteditor und tragen Sie oben Ihre Datenbank Zugangsdaten ein genauso wie sie in den configure.php Ihres Zen Cart Shops auch hinterlegt sind.
+
+3) Laden Sie die geänderte PHP-Datei utf8mb-conversion.php nun in das Stammverzeichnis Ihres Shops hoch (an der gleichen Stelle wie `ipn_main_handler.php`)
+
+4) Rufen Sie nun die Datei in Ihrem Browser auf: https://www.meinshop.de/utf8mb4-conversion.php
+Warten Sie, es kann einige Zeit dauern, bis Sie eine Rückmeldung auf der Seite sehen.
+Die Konvertierung zeigt den aktuellen Fortschritt an sowie Statistiken nach Abschluss. 
+Warten Sie bis alles vollständig durchgelaufen ist.
+
+5) LÖSCHEN SIE DIE DATEI VON IHREM SERVER, wenn Sie fertig sind.
+
+6) Aktualisieren Sie Ihre Zen Cart-Konfiguration, um den neuen Zeichensatz zu verwenden, falls Sie das noch nicht getan haben
+Beide configure.php benötigen das, die includes/configure.php im Shopverzeichnis und die DEINADMIN/includes/configure.php in Ihrem Adminverzeichnis.
+Prüfen Sie beide.
+Sollte dort noch folgendes definiert sein:
+define('DB_CHARSET', 'utf8');
+Dann ändern Sie nun in beiden auf: 
+define('DB_CHARSET', 'utf8mb4');
